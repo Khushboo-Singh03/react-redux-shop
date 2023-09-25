@@ -15,6 +15,18 @@ const userSlice = createSlice({
     //   state.users.push({ ...action.payload, id });
     //   console.log("Action payload",{...action.payload} )
     // },
+
+
+    // addUser: (state, action) => {
+    //   const {name, email} = action.payload
+    //   const user = {
+    //     id: nanoid(),
+    //     name: name,
+    //     email: email
+    //   };
+    //   state.users.push(user);
+    // },
+
     addUser: (state, action) => {
       const id = nanoid();
       state.users = [...state.users, { ...action.payload, id }];
@@ -54,5 +66,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { addUser, editUser, removeUser,deleteUser } = userSlice.actions;
-export default userSlice.reducer;
+export const { addUser, removeUser, deleteUser,editUser} = userSlice.actions
+export default userSlice.reducer
