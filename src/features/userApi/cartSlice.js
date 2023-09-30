@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: [], 
+    items: [],
     totalPrice: 0,
   },
   reducers: {
@@ -29,26 +29,39 @@ const cartSlice = createSlice({
       }
     },
     decrementQuantity: (state, action) => {
-        const product = action.payload;
-        const existingProduct = state.items[product.id];
-      
-        if (existingProduct && existingProduct.quantity > 0) {
+      const product = action.payload;
+      const existingProduct = state.items[product.id];
+    
+      if (existingProduct) {
+        if (existingProduct.quantity === 1) {
+          // If the product quantity is 1, remove it from the cart
+          delete state.items[product.id];
+        } else {
+          // Decrease the quantity if it's greater than 1
           existingProduct.quantity--;
           state.totalPrice -= product.price;
-          
-          // If quantity becomes 0, you can choose to remove the item from the cart
-          if (existingProduct.quantity === 0) {
-            delete state.items[product.id];
-          }
         }
-      },     
+      }
+    },
+    removeFromCart: (state, action) => {
+      const product = action.payload;
+      const existingProduct = state.items[product.id];
+
+      if (existingProduct) {
+        if (existingProduct.quantity === 1) {
+          delete state.items[product.id];
+        } else {
+          existingProduct.quantity--;
+        }
+
+        state.totalPrice -= product.price;
+      }
+    },
+    
   },
 });
 
-export const {
-  addToCart,
-  incrementQuantity,
-  decrementQuantity,
-} = cartSlice.actions;
+export const { addToCart, removeFromCart, incrementQuantity, decrementQuantity } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
